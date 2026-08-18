@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 798012527213913902}
   - component: {fileID: 1784621581270055093}
   - component: {fileID: -963973768326749237}
+  - component: {fileID: 392091963938655827}
   m_Layer: 0
   m_Name: Bullet Test
   m_TagString: Untagged
@@ -142,3 +143,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 90
   m_CollisionDetection: 1
+--- !u!114 &392091963938655827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3317582119662454782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f53c2acd30f61b140ace3120a2ae113c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Bullet
