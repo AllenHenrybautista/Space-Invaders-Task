@@ -4,8 +4,8 @@ using UnityEngine;
 public class BulletSpawner : MonoBehaviour, IBulletSpawner
 {
     [SerializeField] private Bullet bulletPrefab;
-    [SerializeField] private int initialPoolSize = 10;
-    [SerializeField] private float bulletSpeed = 10f;
+    [SerializeField] private int initialPoolSize = 1;
+    [SerializeField] private float bulletSpeed = 5f;
     [SerializeField] private float bulletLifetime = 3f;
 
     private readonly Queue<Bullet> availableBullets = new();
@@ -19,6 +19,7 @@ public class BulletSpawner : MonoBehaviour, IBulletSpawner
     public void Spawn(Vector3 position, Vector3 direction)
     {
         Bullet bullet = GetBullet();
+        Debug.Log($"Spawn called at {position}, dir {direction}");
 
         if (bullet == null)
             return;
@@ -54,7 +55,7 @@ public class BulletSpawner : MonoBehaviour, IBulletSpawner
         if (availableBullets.Count > 0)
             return availableBullets.Dequeue();
 
-        return CreateBullet();
+        return null;
     }
 
     private Bullet CreateBullet()

@@ -62,11 +62,12 @@ public class PlayerControl : MonoBehaviour
         moveInput = value.Get<Vector2>();
     }
 
-    private void OnFire(InputValue value)
+    private void OnAttack(InputValue value)
     {
         if (!value.isPressed)
             return;
 
         Shoot();
+        Debug.Log("Fire button pressed");
     }
 }
