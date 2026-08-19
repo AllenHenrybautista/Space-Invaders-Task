@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5676430199121770791}
   - component: {fileID: 1798464439530340503}
   m_Layer: 0
-  m_Name: ScoreManager
+  m_Name: Score_Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55,7 +55,7 @@ GameObject:
   - component: {fileID: 4028073971180070355}
   - component: {fileID: 6251369511405314693}
   m_Layer: 0
-  m_Name: Game Manager
+  m_Name: Game_Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -91,7 +91,11 @@ MonoBehaviour:
   difficulty: 0
   enemyGridSpawner: {fileID: 372182600453628206}
   enemyFormationController: {fileID: 8946637458386440182}
-  boundaryMargin: 11
+  dangerZone: {fileID: 0}
+  playerHealth: {fileID: 0}
+  uimanager: {fileID: 0}
+  leftBoundaryX: -23.5
+  rightBoundaryX: 22
   gizmoDepth: 10
 --- !u!1 &2946527084546408791
 GameObject:
@@ -104,8 +108,9 @@ GameObject:
   - component: {fileID: 360040929929947448}
   - component: {fileID: 8946637458386440182}
   - component: {fileID: 372182600453628206}
+  - component: {fileID: 7360326321358139921}
   m_Layer: 0
-  m_Name: Enemy Logic
+  m_Name: Enemy_Logic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -120,7 +125,7 @@ Transform:
   m_GameObject: {fileID: 2946527084546408791}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 4.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -140,7 +145,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyFormationController
   baseMoveSpeed: 3
   stepDownDistance: 0.8
-  speedUpPerEnemyLost: 0.15
+  speedUpPerEnemyLost: 0.5
 --- !u!114 &372182600453628206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,8 +159,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyGridSpawner
   enemyPrefab: {fileID: 1533391162127610041, guid: dfad21ce969149843af4f5aef3109abe, type: 3}
-  horizontalSpacing: 5
+  horizontalSpacing: 4
   verticalSpacing: 4
+--- !u!114 &7360326321358139921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2946527084546408791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 424cf24dcec9b9e4ab5fef61526636c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySwarmShooter
+  formation: {fileID: 8946637458386440182}
+  fireInterval: 4
 --- !u!1 &5887894935998122112
 GameObject:
   m_ObjectHideFlags: 0
@@ -167,7 +186,7 @@ GameObject:
   - component: {fileID: 6994361628864658442}
   - component: {fileID: 2217993334786492223}
   m_Layer: 0
-  m_Name: BulletPool
+  m_Name: Bullet_Pool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -226,7 +245,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7721213112043716075}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -235,5 +254,72 @@ Transform:
   - {fileID: 6994361628864658442}
   - {fileID: 4028073971180070355}
   - {fileID: 5676430199121770791}
+  - {fileID: 3413373338175160823}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8349792103680375371
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3413373338175160823}
+  - component: {fileID: 3167706393950727097}
+  - component: {fileID: 5100614441199162136}
+  m_Layer: 0
+  m_Name: DangerZone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3413373338175160823
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8349792103680375371}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -7.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5123994729612120973}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &3167706393950727097
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8349792103680375371}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 46.02056, y: 27.925014, z: 1.0048764}
+  m_Center: {x: -0.046855927, y: -0.69664574, z: 0.0024380684}
+--- !u!114 &5100614441199162136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8349792103680375371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebbc54f8946e1e1459ba6af4bab33158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyDangerZone
