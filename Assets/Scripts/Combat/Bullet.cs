@@ -5,6 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour, ITeamMember
 {
     [SerializeField] private Renderer bulletRenderer;
+    [SerializeField] private float bulletSpeed = 10f;
     [SerializeField] private int damage = 1;
 
     private Rigidbody body;
@@ -32,8 +33,8 @@ public class Bullet : MonoBehaviour, ITeamMember
     public void Launch(
         Vector3 position,
         Vector3 direction,
-        float speed,
         float lifetime,
+        float bulletspeed,
         Team team,
         Color color,
         GameObject owner)
@@ -41,13 +42,13 @@ public class Bullet : MonoBehaviour, ITeamMember
         ownerTeam = team;
         ownerObject = owner;
         transform.position = position;
-        transform.forward = direction;
+        transform.rotation = Quaternion.LookRotation(direction);
         SetColor(color);
 
         gameObject.SetActive(true);
 
         body.linearVelocity = Vector3.zero;
-        body.linearVelocity = direction.normalized * speed;
+        body.linearVelocity = direction.normalized * bulletSpeed;
 
         if (lifetimeRoutine != null)
             StopCoroutine(lifetimeRoutine);
@@ -86,8 +87,12 @@ public class Bullet : MonoBehaviour, ITeamMember
             bool isFriendly = other.TryGetComponent(out ITeamMember targetMember)
                 && targetMember.Team == ownerTeam;
 
-            if (!isFriendly)
-                damageable.TakeDamage(damage);
+            if (isFriendly)
+                return;
+
+            damageable.TakeDamage(damage);
+            Release();
+            return;
         }
 
         Release();

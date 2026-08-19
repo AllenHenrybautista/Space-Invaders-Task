@@ -1,10 +1,18 @@
+using System;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour, IDamageable
+public class Enemy : MonoBehaviour, IDamageable, ITeamMember
 {
     [SerializeField] private int maxHealth = 1;
+    [SerializeField] private int pointValue = 10;
 
     private int currentHealth;
+
+    public Team Team => Team.Enemy;
+    public int PointValue => pointValue;
+
+    public event Action<Enemy> OnDeath;
+    public static event Action<Enemy> AnyEnemyDied;
 
     private void Awake()
     {
@@ -21,8 +29,8 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private void Die()
     {
+        OnDeath?.Invoke(this);
+        AnyEnemyDied?.Invoke(this);
         gameObject.SetActive(false);
-        // We'll replace this with Destroy(gameObject) or a pooling release later,
-        // depending on how you end up spawning enemies.
     }
 }
