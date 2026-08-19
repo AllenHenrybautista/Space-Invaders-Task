@@ -2,35 +2,17 @@
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(PlayerInput))]
-public class PlayerControl : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
-    [Header("Movement")]
     [SerializeField] private float speed = 5f;
-
-    [Header("Shooting")]
-    [SerializeField] private MonoBehaviour bulletSpawnerBehaviour;
-    [SerializeField] private float bulletSpawnDistance = 1f;
+    [SerializeField] private BulletSpawner bulletSpawner;
 
     private Rigidbody body;
-    private IBulletSpawner bulletSpawner;
     private Vector2 moveInput;
-
-    private readonly Vector3 shootDirection = Vector3.up;
 
     private void Awake()
     {
         body = GetComponent<Rigidbody>();
-
-        bulletSpawner = bulletSpawnerBehaviour as IBulletSpawner;
-
-        if (bulletSpawner == null)
-        {
-            Debug.LogError(
-                $"{nameof(bulletSpawnerBehaviour)} must implement {nameof(IBulletSpawner)}.",
-                this
-            );
-        }
     }
 
     private void FixedUpdate()
@@ -46,17 +28,6 @@ public class PlayerControl : MonoBehaviour
         body.MovePosition(body.position + movement);
     }
 
-    private void Shoot()
-    {
-        if (bulletSpawner == null)
-            return;
-
-        Vector3 spawnPosition =
-            body.position + shootDirection * bulletSpawnDistance;
-
-        bulletSpawner.Spawn(spawnPosition, shootDirection);
-    }
-
     private void OnMove(InputValue value)
     {
         moveInput = value.Get<Vector2>();
@@ -66,8 +37,7 @@ public class PlayerControl : MonoBehaviour
     {
         if (!value.isPressed)
             return;
-
-        Shoot();
-        Debug.Log("Fire button pressed");
+        Debug.Log("Fire");
+        bulletSpawner.Shoot(Vector3.up);
     }
 }

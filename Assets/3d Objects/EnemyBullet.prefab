@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -963973768326749237}
   - component: {fileID: 392091963938655827}
   m_Layer: 0
-  m_Name: Bullet Test
+  m_Name: EnemyBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69,7 +69,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fb1c4eb345f79c049bff8023a44d30bb, type: 2}
+  - {fileID: 2100000, guid: fef2298c38b825d4d9c47a5fc2927039, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -155,4 +155,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53c2acd30f61b140ace3120a2ae113c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bullet
-  bulletRenderer: {fileID: 798012527213913902}
