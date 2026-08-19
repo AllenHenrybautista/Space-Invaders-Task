@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Difficulty difficulty = Difficulty.Normal;
     [SerializeField] private EnemyGridSpawner enemyGridSpawner;
     [SerializeField] private EnemyFormationController enemyFormationController;
+    [SerializeField] private EnemyDangerZone dangerZone;
     [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] private UIManager uimanager;
     [SerializeField] private float leftBoundaryX = -5f;
@@ -38,7 +39,9 @@ public class GameManager : MonoBehaviour
         }
         enemyFormationController.Initialize(leftBoundaryX, rightBoundaryX);
         enemyFormationController.OnAllEnemiesDefeated += HandleWaveCleared;
-        enemyFormationController.OnEnemiesReachedPlayer += HandleGameOver;
+
+        if (dangerZone != null)
+            dangerZone.OnEnemyReachedZone += HandleGameOver;
 
         if (playerHealth != null)
             playerHealth.OnPlayerDied += HandleGameOver;
@@ -54,6 +57,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Game over.");
         Time.timeScale = 0f;
+        enemyFormationController.Stop();
         OnGameOver?.Invoke();
     }
 

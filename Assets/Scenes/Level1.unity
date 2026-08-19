@@ -342,6 +342,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &673188051 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5123994729612120973, guid: 4513809a22d425a46b86000fcb74e0ba, type: 3}
+  m_PrefabInstance: {fileID: 2367129308806598366}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &731101810 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7765993953316472509, guid: 329e618e060066c41aea15bceb35fed5, type: 3}
@@ -1548,6 +1553,72 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3179137506847132903, guid: 329e618e060066c41aea15bceb35fed5, type: 3}
   m_PrefabInstance: {fileID: 2881938359818607158}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1993849588
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1993849589}
+  - component: {fileID: 1993849591}
+  - component: {fileID: 1993849590}
+  m_Layer: 0
+  m_Name: DangerZone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1993849589
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1993849588}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -7.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 673188051}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1993849590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1993849588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebbc54f8946e1e1459ba6af4bab33158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyDangerZone
+--- !u!65 &1993849591
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1993849588}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 46.02056, y: 27.925014, z: 1.0048764}
+  m_Center: {x: -0.046855927, y: -0.69664574, z: 0.0024380684}
 --- !u!1 &2026591646
 GameObject:
   m_ObjectHideFlags: 0
@@ -1803,7 +1874,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 5123994729612120973, guid: 4513809a22d425a46b86000fcb74e0ba, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1993849589}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2946527084546408791, guid: 4513809a22d425a46b86000fcb74e0ba, type: 3}
       insertIndex: -1

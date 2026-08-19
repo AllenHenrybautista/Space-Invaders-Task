@@ -80,6 +80,9 @@ public class Bullet : MonoBehaviour, ITeamMember
         if (otherBullet != null)
             return;
 
+        if (other.TryGetComponent(out EnemyDangerZone dangerZone))
+            return;
+
         IDamageable damageable = other.GetComponent<IDamageable>();
 
         if (damageable != null)
