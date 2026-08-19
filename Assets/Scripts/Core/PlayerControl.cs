@@ -14,9 +14,12 @@ public class PlayerController : MonoBehaviour
 
     [Header("Shooting")]
     [SerializeField] private BulletSpawner bulletSpawner;
+    [SerializeField] private float fireRate = 0.25f;
 
     private Rigidbody body;
     private Vector2 moveInput;
+    private float nextFireTime;
+    private bool isFiring;
 
     private void Awake()
     {
@@ -63,8 +66,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnAttack(InputValue value)
     {
-        if (!value.isPressed)
-            return;
+        isFiring = value.isPressed;
 
         bulletSpawner.Shoot(Vector3.forward);
     }

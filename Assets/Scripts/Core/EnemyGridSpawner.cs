@@ -11,12 +11,6 @@ public class EnemyGridSpawner : MonoBehaviour
 
     public float GridWidth => (columns - 1) * horizontalSpacing;
 
-
-    // Enemies are spawned once per wave (not per-frame), so a plain Instantiate
-    // is appropriate here rather than pooling. If waves respawn frequently,
-    // this could be extended with an EnemyPool mirroring BulletPool's pattern
-    // preventing over engineering as well.
-
     public void SpawnGrid(Difficulty difficulty)
     {
         (columns, rows) = GetGridSize(difficulty);

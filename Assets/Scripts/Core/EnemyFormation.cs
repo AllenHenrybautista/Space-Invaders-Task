@@ -8,8 +8,9 @@ public class EnemyFormationController : MonoBehaviour
     [SerializeField] private float stepDownDistance = 0.5f;
     [SerializeField] private float speedUpPerEnemyLost = 0.15f;
 
-    public event Action OnAllEnemiesDefeated;
-    public IReadOnlyList<Enemy> AliveEnemies => aliveEnemies;
+    [Header("Lose Condition")]
+    [SerializeField] private float loseBoundaryZ = 1f;
+    [SerializeField] private float gizmoLineWidth = 12f;
 
     private readonly List<Enemy> aliveEnemies = new();
     private int startingEnemyCount;
@@ -17,7 +18,14 @@ public class EnemyFormationController : MonoBehaviour
     private float leftBoundaryX;
     private float rightBoundaryX;
     private bool isActive;
+    private bool hasTriggeredLoss;
 
+    public event Action OnAllEnemiesDefeated;
+    public event Action OnEnemiesReachedPlayer;
+   
+    public IReadOnlyList<Enemy> AliveEnemies => aliveEnemies;
+
+    
     public void Initialize(float leftBoundary, float rightBoundary)
     {
         leftBoundaryX = leftBoundary;
@@ -92,5 +100,16 @@ public class EnemyFormationController : MonoBehaviour
 
         if (aliveEnemies.Count == 0)
             OnAllEnemiesDefeated?.Invoke();
+    }
+
+    private void OnDrawGizmos()
+    {
+        float halfWidth = gizmoLineWidth / 2f;
+
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawLine(
+            new Vector3(-halfWidth, 0f, loseBoundaryZ),
+            new Vector3(halfWidth, 0f, loseBoundaryZ)
+        );
     }
 }

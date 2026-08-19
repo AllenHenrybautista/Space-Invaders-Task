@@ -4,7 +4,7 @@ using UnityEngine;
 public class BulletPool : MonoBehaviour
 {
     [SerializeField] private Bullet bulletPrefab;
-    [SerializeField] private int initialPoolSize = 20;
+    [SerializeField] private int initialPoolSize = 10;
 
     private readonly Queue<Bullet> availableBullets = new();
 

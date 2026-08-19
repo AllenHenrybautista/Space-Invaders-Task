@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class BulletSpawner : MonoBehaviour
 {
-    //To Support Shared pool of bullets for both player and enemy (expansion purpose as well)
     [SerializeField] private BulletPool bulletPool;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private Team team;
@@ -10,6 +9,7 @@ public class BulletSpawner : MonoBehaviour
     [SerializeField] private float bulletSpeed = 10f;
     [SerializeField] private float bulletLifetime = 3f;
 
+    private Bullet activeBullet;
 
     private void Awake()
     {
@@ -19,14 +19,15 @@ public class BulletSpawner : MonoBehaviour
 
     public void Shoot(Vector3 direction)
     {
-        Debug.Log($"{name}: BulletSpawner.Shoot() called, pool = {bulletPool}, spawnPoint = {spawnPoint}");
-
         if (bulletPool == null)
             return;
 
-        Bullet bullet = bulletPool.Get();
-        Debug.Log($"{name}: got bullet {bullet}, active = {bullet.gameObject.activeSelf}, position = {spawnPoint.position}");
-        bullet.Launch(
+        if (activeBullet != null && activeBullet.gameObject.activeSelf)
+            return;
+
+        activeBullet = bulletPool.Get();
+
+        activeBullet.Launch(
             spawnPoint.position,
             direction,
             bulletSpeed,
@@ -35,5 +36,7 @@ public class BulletSpawner : MonoBehaviour
             bulletColor,
             gameObject
         );
+
+        SFXManager.Instance?.ShootClip();
     }
 }
