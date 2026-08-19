@@ -99,7 +99,7 @@ public class Bullet : MonoBehaviour, ITeamMember
         propertyBlock.SetColor("_BaseColor", color);
         bulletRenderer.SetPropertyBlock(propertyBlock);
     }
-
+    
     private IEnumerator LifetimeRoutine(float lifetime)
     {
         yield return new WaitForSeconds(lifetime);
