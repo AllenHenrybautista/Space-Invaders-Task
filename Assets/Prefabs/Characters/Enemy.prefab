@@ -221,5 +221,5 @@ MonoBehaviour:
   spawnPoint: {fileID: 2645242195876442825}
   team: 1
   bulletColor: {r: 1, g: 0.0141509175, b: 0.0141509175, a: 1}
-  bulletSpeed: 2
+  bulletSpeed: 10
   bulletLifetime: 10

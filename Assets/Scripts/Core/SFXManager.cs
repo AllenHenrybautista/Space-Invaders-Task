@@ -1,17 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SFXManager : MonoBehaviour
 {
     public static SFXManager Instance { get; private set; }
 
     [Header("Clips")]
-    [SerializeField] private AudioClip playerShootClip;
-    [SerializeField] private AudioClip enemyShootClip;
+    [SerializeField] private AudioClip Shootclip;
     [SerializeField] private AudioClip enemyDeathClip;
     [SerializeField] private AudioClip playerHitClip;
     [SerializeField] private AudioClip waveClearedClip;
+
+    [Header("BGM")]
+    [SerializeField] private AudioClip bgmClip;
+    [SerializeField] private bool playBGMOnStart = true;
+    [SerializeField, Range(0f, 1f)] private float bgmVolume = 0.6f;
+    [SerializeField] private float bgmFadeDuration = 1f;
 
     [Header("References")]
     [SerializeField] private PlayerHealth playerHealth;
@@ -23,6 +29,14 @@ public class SFXManager : MonoBehaviour
     private readonly Queue<AudioSource> availableSources = new();
     private int previousPlayerHealth = -1;
 
+    private AudioSource bgmSource;
+    private Coroutine bgmFadeRoutine;
+
+    public void ShootClip() => PlayClip(Shootclip);
+    public void PlayWaveCleared() => PlayClip(waveClearedClip);
+    public void PauseBGM() => bgmSource.Pause();
+    public void ResumeBGM() => bgmSource.UnPause();
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -33,11 +47,18 @@ public class SFXManager : MonoBehaviour
 
         Instance = this;
         InitializePool();
+        SetUpBGMSource();
+    }
+
+    private void Start()
+    {
+        SetupBGM();
     }
 
     private void OnEnable()
     {
         Enemy.AnyEnemyDied += HandleEnemyDied;
+        SceneManager.sceneLoaded += HandleSceneLoaded;
 
         if (playerHealth != null)
             playerHealth.OnHealthChanged += HandlePlayerHealthChanged;
@@ -46,14 +67,63 @@ public class SFXManager : MonoBehaviour
     private void OnDisable()
     {
         Enemy.AnyEnemyDied -= HandleEnemyDied;
+        SceneManager.sceneLoaded -= HandleSceneLoaded;
 
         if (playerHealth != null)
             playerHealth.OnHealthChanged -= HandlePlayerHealthChanged;
     }
 
-    public void PlayPlayerShoot() => PlayClip(playerShootClip);
-    public void PlayEnemyShoot() => PlayClip(enemyShootClip);
-    public void PlayWaveCleared() => PlayClip(waveClearedClip);
+    // SFXManager persists across scenes (DontDestroyOnLoad), so OnEnable only
+    // ever runs once. playerHealth is a scene-specific object, so we need to
+    // re-find it and re-subscribe every time a new scene finishes loading —
+    // otherwise this reference stays stuck pointing at whatever scene
+    // SFXManager originally started in (or null, if that was Main Menu).
+    private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (playerHealth != null)
+            playerHealth.OnHealthChanged -= HandlePlayerHealthChanged;
+
+        playerHealth = FindObjectOfType<PlayerHealth>();
+
+        if (playerHealth != null)
+        {
+            playerHealth.OnHealthChanged += HandlePlayerHealthChanged;
+            previousPlayerHealth = -1; // reset baseline for the new scene
+        }
+    }
+
+    private void SetupBGM()
+    {
+        if (playBGMOnStart && bgmClip != null)
+            PlayBGM(bgmClip);
+    }
+
+    public void PlayBGM(AudioClip clip = null)
+    {
+        AudioClip clipToPlay = clip != null ? clip : bgmClip;
+
+        if (clipToPlay == null)
+            return;
+
+        if (bgmFadeRoutine != null)
+            StopCoroutine(bgmFadeRoutine);
+
+        bgmFadeRoutine = StartCoroutine(CrossfadeBGM(clipToPlay));
+    }
+
+    public void StopBGM()
+    {
+        if (bgmFadeRoutine != null)
+            StopCoroutine(bgmFadeRoutine);
+
+        bgmFadeRoutine = StartCoroutine(FadeOutAndStop());
+    }
+
+    public void SetBGMVolume(float volume)
+    {
+        bgmVolume = Mathf.Clamp01(volume);
+        bgmSource.volume = bgmVolume;
+    }
 
     private void HandleEnemyDied(Enemy enemy)
     {
@@ -116,5 +186,53 @@ public class SFXManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         availableSources.Enqueue(source);
+    }
+
+    private void SetUpBGMSource()
+    {
+        GameObject bgmObject = new GameObject("BGM_AudioSource");
+        bgmObject.transform.SetParent(transform);
+
+        bgmSource = bgmObject.AddComponent<AudioSource>();
+        bgmSource.playOnAwake = false;
+        bgmSource.loop = true;
+        bgmSource.volume = 0f;
+    }
+
+    private IEnumerator CrossfadeBGM(AudioClip clip)
+    {
+        if (bgmSource.isPlaying)
+            yield return FadeVolume(bgmSource, bgmSource.volume, 0f, bgmFadeDuration);
+
+        bgmSource.clip = clip;
+        bgmSource.Play();
+
+        yield return FadeVolume(bgmSource, 0f, bgmVolume, bgmFadeDuration);
+    }
+
+    private IEnumerator FadeOutAndStop()
+    {
+        yield return FadeVolume(bgmSource, bgmSource.volume, 0f, bgmFadeDuration);
+        bgmSource.Stop();
+    }
+
+    private IEnumerator FadeVolume(AudioSource source, float from, float to, float duration)
+    {
+        if (duration <= 0f)
+        {
+            source.volume = to;
+            yield break;
+        }
+
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            source.volume = Mathf.Lerp(from, to, elapsed / duration);
+            yield return null;
+        }
+
+        source.volume = to;
     }
 }
