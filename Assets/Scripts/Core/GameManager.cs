@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Wave cleared!");
         OnWaveCleared?.Invoke();
+        Time.timeScale = 0f;
     }
 
     private void HandleGameOver()
