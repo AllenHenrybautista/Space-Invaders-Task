@@ -73,11 +73,6 @@ public class SFXManager : MonoBehaviour
             playerHealth.OnHealthChanged -= HandlePlayerHealthChanged;
     }
 
-    // SFXManager persists across scenes (DontDestroyOnLoad), so OnEnable only
-    // ever runs once. playerHealth is a scene-specific object, so we need to
-    // re-find it and re-subscribe every time a new scene finishes loading —
-    // otherwise this reference stays stuck pointing at whatever scene
-    // SFXManager originally started in (or null, if that was Main Menu).
     private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (playerHealth != null)
@@ -88,7 +83,7 @@ public class SFXManager : MonoBehaviour
         if (playerHealth != null)
         {
             playerHealth.OnHealthChanged += HandlePlayerHealthChanged;
-            previousPlayerHealth = -1; // reset baseline for the new scene
+            previousPlayerHealth = -1;
         }
     }
 

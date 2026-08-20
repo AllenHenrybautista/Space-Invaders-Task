@@ -9,7 +9,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI healthText;
 
-    //Wave clear
     [SerializeField] private TextMeshProUGUI totalScore;
     [SerializeField] private GameObject waveClearedPanel;
     [SerializeField] private GameObject navPanel;

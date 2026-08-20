@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     // to centralize the wave difficulty and spawning logic, 
     // i've added it here 
     // this also allows the feature to support modularity or expansion.
+
     private void StartWave()
     {
         enemyGridSpawner.SpawnGrid(difficulty);
